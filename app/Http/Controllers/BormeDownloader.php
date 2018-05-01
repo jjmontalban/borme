@@ -17,12 +17,18 @@ class BormeDownloader extends Controller
 		Storage::put(basename($address) , file_get_contents($address));	
 		$rutaTemporal = storage_path('app');
 
+		/* Comprobar descarga de archivo */
+		if(!file_exists( $rutaTemporal . "/" . basename($address) )){
+			echo("Error al descargar archivo. Por favor, intente otra vez");
+			return view('welcome');
+			}
+
 		/* Pasar contenido a cadena de texto */
 		$parser = new \Smalot\PdfParser\Parser();
 		$pdf = $parser->parseFile($rutaTemporal . "/" . basename($address));
 		$text = $pdf->getText();
 
-		/* Guaradar contenido en un nuevo archivo y eliminar el original */
+		/* Guardar contenido en un nuevo archivo y eliminar el original */
 		$filename = basename($address, ".pdf");
 		$ruta = storage_path('public');
 
@@ -31,9 +37,11 @@ class BormeDownloader extends Controller
 			echo("Archivo guardado en ". $ruta);
 			return view('welcome');
 			}
-		else
-			return response()->json(['message' => 'Error al almacenar archivo']);
 
+		else{
+			echo("Error al generar archivo.");
+			return view('welcome');
+			}
     }
 }
 

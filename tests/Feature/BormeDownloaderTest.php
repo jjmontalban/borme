@@ -9,12 +9,16 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class BormeDownloaderTest extends TestCase
 {
     /**
+     * 
+     *
      * A basic test example.
      *
      * @return void
      */
+    
     public function testExample()
     {
-        $this->assertTrue(true);
+        $this->post('/bormedownloader')
+        	 ->assertStatus(200);
     }
 }
